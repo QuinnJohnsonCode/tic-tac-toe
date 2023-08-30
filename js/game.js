@@ -157,14 +157,12 @@ let game = (function(gameBoard, displayController) {
         // Update player stats
         xPlayer.updateStats(endGameState);
         oPlayer.updateStats(endGameState);
-
-        reset();
     }
 
     let reset = function() {
         gameEnded = false;
         gameBoard.resetBoard();
-        displayController.updateGridFromBoard(gameBoard);
+        displayController.updateGridFromBoard(gameBoard.getBoard());
     }
     
     // Create and store players
