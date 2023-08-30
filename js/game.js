@@ -1,4 +1,3 @@
-
 // gameBoard is a Module that contains the board and has functions corresponding to the board
 let gameBoard = (function() {
     // Private
@@ -16,6 +15,10 @@ let gameBoard = (function() {
         },
 
         getBoard: () => board,
+
+        updateBoard: function(marker, index) {
+            board[index] = marker;
+        },
     };
 })();
 
