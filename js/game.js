@@ -67,12 +67,25 @@ let PlayerFactory = marker => {
     let losses = 0;
     let draws = 0;
 
-    const win =  () => ++wins;
-    const lose = () => ++losses;
-    const draw = () => ++draws;
+    const updateStats = function(endState) {
+        if (endState === "D") {
+            draws++;
+        }
+        else if (endState === marker) {
+            wins++;
+        }
+        else {
+            losses++;
+        }
+    };
+
     const getMarker = () => marker;
 
-    return { getMarker, win, lose, draw};
+    const getStats = function() {
+        return { wins, losses, draws };
+    };
+
+    return { getMarker, updateStats, getStats, };
 };
 
 // displayController is a Module that will update the DOM according to changes to the gameBoard
@@ -134,8 +147,12 @@ let game = (function(gameBoard, displayController) {
         turn = (turn === X_TURN) ? O_TURN : X_TURN;
     };
 
-    let endGame = function(marker) {
+    let endGame = function(endGameState) {
         gameEnded = true;
+
+        // Update player stats
+        xPlayer.updateStats(endGameState);
+        oPlayer.updateStats(endGameState);
     }
     
     // Create and store players
