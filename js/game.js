@@ -14,6 +14,10 @@ let gameBoard = (function() {
             return boardRepresentation;
         },
 
+        resetBoard: function() {
+            board.fill("-");
+        },
+
         getBoard: () => board,
 
         updateBoard: function(marker, index) {
@@ -153,6 +157,14 @@ let game = (function(gameBoard, displayController) {
         // Update player stats
         xPlayer.updateStats(endGameState);
         oPlayer.updateStats(endGameState);
+
+        reset();
+    }
+
+    let reset = function() {
+        gameEnded = false;
+        gameBoard.resetBoard();
+        displayController.updateGridFromBoard(gameBoard);
     }
     
     // Create and store players
