@@ -61,6 +61,7 @@ let game = (function(gameBoard, displayController) {
     // Private
     const xPlayer = PlayerFactory("X");
     const oPlayer = PlayerFactory("O");
+    const players = [xPlayer, oPlayer];
 
     // Initialize the grid in the displayController
     displayController.updateGridFromBoard(gameBoard.getBoard());
