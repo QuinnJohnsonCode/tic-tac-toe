@@ -25,7 +25,6 @@ let gameBoard = (function() {
         },
 
         checkEndGame: function() {
-
             // Check win -> returns marker
             // Horizontal
             for (let i = 0; i < 9; i += 3) {
@@ -48,6 +47,7 @@ let gameBoard = (function() {
             if (board[2] !== "-" && board[2] === board[4] && board[2] === board[6]) {
                 return board[2];
             }
+
             // Check draw -> returns "D" otherwise "-" for non-draw
             for (let i = 0; i < board.length; ++i) {
                 if (board[i] === "-") {
@@ -109,6 +109,8 @@ let game = (function(gameBoard, displayController) {
 
     // Handles the logic of a turn
     let playerMove = function(index) {
+        // If the game has ended, cancel move
+        if (gameEnded) { return; }
 
         // Check to see if the square is taken and cancel move if so
         if (gameBoard.isTaken(index)) { return; }
@@ -119,7 +121,10 @@ let game = (function(gameBoard, displayController) {
         displayController.updateGridFromBoard(gameBoard.getBoard());
 
         // Check for an end game state
-        console.log(gameBoard.checkEndGame());
+        const endGameState = gameBoard.checkEndGame();
+        if (endGameState !== "-") {
+            endGame(endGameState);
+        }
 
         // Invert the turn (0 -> 1 or 1 -> 0)
         changeTurn();
@@ -128,6 +133,10 @@ let game = (function(gameBoard, displayController) {
     let changeTurn = function() {
         turn = (turn === X_TURN) ? O_TURN : X_TURN;
     };
+
+    let endGame = function(marker) {
+        gameEnded = true;
+    }
     
     // Create and store players
     const xPlayer = PlayerFactory("X");
@@ -138,6 +147,7 @@ let game = (function(gameBoard, displayController) {
     const X_TURN = 0;
     const O_TURN = 1;
     let turn = X_TURN;
+    let gameEnded = false;
 
     // Initialize the grid in the displayController
     displayController.updateGridFromBoard(gameBoard.getBoard());
