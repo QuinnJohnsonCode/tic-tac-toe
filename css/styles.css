@@ -1,7 +1,21 @@
+:root {
+    --primary-clr: #FFF;
+    --secondary-clr: #272727;
+}
+
+body {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+}
+
 #game-grid {
     display: grid;
     justify-items: center;
     align-items: center;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
+}
+
+#game-grid:nth-child(even) {
+    background-color: var(--secondary-clr);
 }
