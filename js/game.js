@@ -19,6 +19,44 @@ let gameBoard = (function() {
         updateBoard: function(marker, index) {
             board[index] = marker;
         },
+
+        isTaken: function(index) {
+            return board[index] !== "-";
+        },
+
+        checkEndGame: function() {
+
+            // Check win -> returns marker
+            // Horizontal
+            for (let i = 0; i < 9; i += 3) {
+                if (board[i] !== "-" && board[i] === board[i + 1] && board[i] === board[i + 2]) {
+                    return board[i];
+                }
+            }
+
+            // Vertical
+            for (let i = 0; i < 3; ++i) {
+                if (board[i] !== "-" && board[i] === board[i + 3] && board[i] === board[i + 6]) {
+                    return board[i];
+                }
+            }
+
+            // Diagonal
+            if (board[0] !== "-" && board[0] === board[4] && board[0] === board[8]) {
+                return board[0];
+            }
+            if (board[2] !== "-" && board[2] === board[4] && board[2] === board[6]) {
+                return board[2];
+            }
+            // Check draw -> returns "D" otherwise "-" for non-draw
+            for (let i = 0; i < board.length; ++i) {
+                if (board[i] === "-") {
+                    return "-";
+                }
+            }
+
+            return "D";
+        }
     };
 })();
 
@@ -53,19 +91,59 @@ let displayController = (function(document) {
                 squares[i].textContent = board[i];
             }
         },
+
+        getSquares: () => squares,
     };
 })(document);
 
 // game is a Module controlling gameflow and state
 let game = (function(gameBoard, displayController) {
     // Private
+
+    // Handles the click event for the individual squares of the grid
+    let squareClick = function(event) {
+        // Call the move function with the index
+        const indexOfSquare = Number(event.target.getAttribute("data-attribute"));
+        playerMove(indexOfSquare);
+    };
+
+    // Handles the logic of a turn
+    let playerMove = function(index) {
+
+        // Check to see if the square is taken and cancel move if so
+        if (gameBoard.isTaken(index)) { return; }
+        // Update the board with the current player's marker
+        gameBoard.updateBoard(players[turn].getMarker(), index);
+
+        // Update the display with the new board state
+        displayController.updateGridFromBoard(gameBoard.getBoard());
+
+        // Check for an end game state
+        console.log(gameBoard.checkEndGame());
+
+        // Invert the turn (0 -> 1 or 1 -> 0)
+        changeTurn();
+    };
+
+    let changeTurn = function() {
+        turn = (turn === X_TURN) ? O_TURN : X_TURN;
+    };
+    
+    // Create and store players
     const xPlayer = PlayerFactory("X");
     const oPlayer = PlayerFactory("O");
-    const players = [xPlayer, oPlayer];
+    const players = [xPlayer, oPlayer]; // turn = 0: X, turn = 1: O 
+
+    // Turns
+    const X_TURN = 0;
+    const O_TURN = 1;
+    let turn = X_TURN;
 
     // Initialize the grid in the displayController
     displayController.updateGridFromBoard(gameBoard.getBoard());
 
+    // Add event listeners to the squares
+    displayController.getSquares().forEach((square) => square.addEventListener("click", squareClick));
 
     return {
         // Public
