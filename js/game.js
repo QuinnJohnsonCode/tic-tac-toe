@@ -97,6 +97,7 @@ let displayController = (function(document) {
     // Private
     const gameGrid = document.getElementById("game-grid");
     const squares = Array.from(gameGrid.children);
+    const resetButton = document.getElementById("reset-button");
     return {
         // Public
         updateGridFromBoard: function(board) {
@@ -110,6 +111,7 @@ let displayController = (function(document) {
         },
 
         getSquares: () => squares,
+        getResetButton: () => resetButton,
     };
 })(document);
 
@@ -161,6 +163,7 @@ let game = (function(gameBoard, displayController) {
 
     let reset = function() {
         gameEnded = false;
+        turn = X_TURN;
         gameBoard.resetBoard();
         displayController.updateGridFromBoard(gameBoard.getBoard());
     }
@@ -181,6 +184,9 @@ let game = (function(gameBoard, displayController) {
 
     // Add event listeners to the squares
     displayController.getSquares().forEach((square) => square.addEventListener("click", squareClick));
+
+    // Add event listener for reset button
+    displayController.getResetButton().addEventListener("click", reset);
 
     return {
         // Public
