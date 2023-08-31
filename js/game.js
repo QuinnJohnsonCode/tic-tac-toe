@@ -99,6 +99,14 @@ let displayController = (function(document) {
     const squares = Array.from(gameGrid.children);
     const resetButton = document.getElementById("reset-button");
     const endText = document.getElementById("end-text");
+
+    const xWin = document.getElementById("x-w");
+    const xLose = document.getElementById("x-l");
+    const xDraw = document.getElementById("x-d");
+    const oWin = document.getElementById("o-w");
+    const oLose = document.getElementById("o-l");
+    const oDraw = document.getElementById("o-d");
+
     return {
         // Public
         updateGridFromBoard: function(board) {
@@ -122,6 +130,15 @@ let displayController = (function(document) {
             else {
                 endText.textContent = endGameState + " wins!";
             }
+        },
+        updateStats: function(statsForX, statsForO) {
+            xWin.textContent = statsForX.wins;
+            xLose.textContent = statsForX.losses;
+            xDraw.textContent = statsForX.draws;
+
+            oWin.textContent = statsForO.wins;
+            oLose.textContent = statsForO.losses;
+            oDraw.textContent = statsForO.draws;
         },
         clearEndText: function() {
             endText.textContent = "";
@@ -175,6 +192,9 @@ let game = (function(gameBoard, displayController) {
         // Update player stats
         xPlayer.updateStats(endGameState);
         oPlayer.updateStats(endGameState);
+
+        // Update player stats text
+        displayController.updateStats(xPlayer.getStats(), oPlayer.getStats());
 
         // Update end text
         displayController.updateEndText(endGameState);

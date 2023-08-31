@@ -19,12 +19,24 @@ footer {
 
 h1 {
     font-size: 2rem;
-    padding-top: 20px;
-    padding-left: 50px;
+
 }
 
 h2 {
     font-size: 1.2rem;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    
+    padding-top: 20px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+th {
+    padding-right: 5px;
 }
 
 main {
@@ -69,4 +81,8 @@ footer {
     font-weight: lighter;
 
     background-color: var(--primary-clr);
+}
+
+#end-text {
+    height: 20px;
 }
