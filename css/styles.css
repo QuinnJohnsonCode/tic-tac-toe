@@ -69,6 +69,10 @@ footer {
     height: 500px;
 }
 
+#end-text {
+    height: 20px;
+}
+
 .square {
     width: calc(500px / 3);
     height: calc(500px / 3);
@@ -82,11 +86,6 @@ footer {
 
     background-color: var(--primary-clr);
 }
-
-#end-text {
-    height: 20px;
-}
-
 
 /* Button styling retrieved from https://copy-paste-css.com/ */
 button {
