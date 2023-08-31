@@ -98,18 +98,34 @@ let displayController = (function(document) {
     const gameGrid = document.getElementById("game-grid");
     const squares = Array.from(gameGrid.children);
     const resetButton = document.getElementById("reset-button");
+    const endText = document.getElementById("end-text");
     return {
         // Public
         updateGridFromBoard: function(board) {
             for (let i = 0; i < board.length; ++i) {
                 // If the DOM has been changed, stop updating grid
                 if (i > squares.length) { break; }
+                // If the value is empty, do not draw it
+                if (board[i] === "-") { 
+                    squares[i].textContent = "";
+                    continue;
+                }
                 
                 // Update the text in the grid matching the board
                 squares[i].textContent = board[i];
             }
         },
-
+        updateEndText: function(endGameState) {
+            if (endGameState === "D") {
+                endText.textContent = "Draw!"
+            }
+            else {
+                endText.textContent = endGameState + " wins!";
+            }
+        },
+        clearEndText: function() {
+            endText.textContent = "";
+        },
         getSquares: () => squares,
         getResetButton: () => resetButton,
     };
@@ -159,12 +175,18 @@ let game = (function(gameBoard, displayController) {
         // Update player stats
         xPlayer.updateStats(endGameState);
         oPlayer.updateStats(endGameState);
+
+        // Update end text
+        displayController.updateEndText(endGameState);
     }
 
     let reset = function() {
         gameEnded = false;
         turn = X_TURN;
+
         gameBoard.resetBoard();
+
+        displayController.clearEndText();
         displayController.updateGridFromBoard(gameBoard.getBoard());
     }
     
