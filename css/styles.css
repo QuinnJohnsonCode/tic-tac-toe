@@ -86,3 +86,25 @@ footer {
 #end-text {
     height: 20px;
 }
+
+
+/* Button styling retrieved from https://copy-paste-css.com/ */
+button {
+    display: inline-block;
+    outline: 0;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 4px;
+    font-size: 13px;
+    height: 30px;
+    background-color: #0000000d;
+    color: #0e0e10;
+    padding: 0 20px;
+
+
+}
+
+button:hover {
+    background-color: #0000001a;
+}
